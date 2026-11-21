@@ -1,0 +1,6 @@
+{
+  "appId": "app.lastchance.free",
+  "appName": "LastChance",
+  "webDir": "www",
+  "server": { "androidScheme": "https" }
+}
