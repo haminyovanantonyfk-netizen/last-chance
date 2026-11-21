@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#7c2d12">
+<meta name="description" content="LastChance — every deadline that can cost you money, in one free place. Returns, free trials, warranties, renewals, documents and bills. Unlimited, no ads, no subscription.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon.svg">
+<title>LastChance — Never Pay for Forgetting</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">⏰ LastChance</div>
+  <div class="risk" title="Money at risk in open deadlines">At risk: <span id="riskTotal">0</span></div>
+</header>
+
+<main>
+  <section class="card alert-card" id="alertCard" hidden>
+    <h2>⚠️ Needs action</h2>
+    <ul id="alertList" class="alerts"></ul>
+  </section>
+
+  <section class="card">
+    <h2>Add a deadline</h2>
+    <label class="field-label" for="typeSelect">Type</label>
+    <select id="typeSelect">
+      <option value="return">📦 Product return</option>
+      <option value="trial">🎟️ Free trial ends</option>
+      <option value="subscription">🔁 Subscription renewal</option>
+      <option value="warranty">🛡️ Warranty expires</option>
+      <option value="refund">💸 Refund follow-up</option>
+      <option value="insurance">☂️ Insurance renewal</option>
+      <option value="document">🪪 Document / ID expiry</option>
+      <option value="membership">🏋️ Membership renewal</option>
+      <option value="bill">🧾 Bill due</option>
+      <option value="custom">✨ Custom deadline</option>
+    </select>
+    <label class="field-label" for="nameInput">Name</label>
+    <input id="nameInput" type="text" maxlength="80" placeholder="e.g. Shoes from Amazon, Netflix trial">
+    <label class="field-label" for="storeInput">Store / service (optional)</label>
+    <input id="storeInput" type="text" maxlength="60" placeholder="e.g. Amazon, Spotify, Passport office">
+    <div class="row">
+      <div><label class="field-label" for="startInput">Start / purchase date</label><input id="startInput" type="date"></div>
+      <div><label class="field-label" for="windowSelect">Window (auto deadline)</label>
+        <select id="windowSelect"><option value="">Pick deadline manually</option><option value="7">7 days</option><option value="14">14 days</option><option value="30">30 days</option><option value="90">90 days</option><option value="180">6 months</option><option value="365">1 year</option><option value="730">2 years</option><option value="1825">5 years</option></select></div>
+    </div>
+    <label class="field-label" for="deadlineInput">Deadline date</label>
+    <input id="deadlineInput" type="date">
+    <div class="row">
+      <div><label class="field-label" for="amountInput">Amount at risk</label><input id="amountInput" type="number" min="0" step="0.01" placeholder="0"></div>
+      <div><label class="field-label" for="currencySelect">Currency</label>
+        <select id="currencySelect"><option>₹</option><option>$</option><option>€</option><option>£</option><option>¥</option></select></div>
+    </div>
+    <label class="field-label" for="linkInput">Manage / return link (optional)</label>
+    <input id="linkInput" type="url" placeholder="https://…">
+    <label class="field-label" for="noteInput">Notes (optional)</label>
+    <input id="noteInput" type="text" maxlength="200" placeholder="Order no., policy no., serial no.…">
+    <button id="addBtn" class="primary">Add deadline ⏰</button>
+    <button id="sampleBtn" class="ghost">Load sample deadlines to see how it works</button>
+  </section>
+
+  <section class="card">
+    <div class="stats">
+      <div><strong id="statOpen">0</strong><span>open</span></div>
+      <div><strong id="statRisk">0</strong><span>at risk</span></div>
+      <div><strong id="statSaved">0</strong><span>saved</span></div>
+      <div><strong id="statLost">0</strong><span>lost</span></div>
+      <div><strong id="statRate">—</strong><span>saved rate</span></div>
+      <div><strong id="statUrgent">0</strong><span>due ≤7 days</span></div>
+    </div>
+    <div class="toolbar">
+      <input id="searchInput" type="text" placeholder="Search name, store, notes…">
+      <select id="filterSelect"><option value="open">Open</option><option value="all">All</option><option value="return">Returns</option><option value="trial">Free trials</option><option value="subscription">Subscriptions</option><option value="warranty">Warranties</option><option value="document">Documents</option><option value="done">Completed</option><option value="missed">Missed</option></select>
+      <select id="sortSelect"><option value="deadline">Sort: soonest first</option><option value="amount">Sort: biggest amount</option><option value="newest">Sort: newest added</option></select>
+    </div>
+    <div id="groups"></div>
+    <p id="emptyText" class="hint">Nothing here yet. Add your first return, trial or warranty above — future-you says thanks.</p>
+  </section>
+
+  <section class="card">
+    <h2>Reminders that actually reach you</h2>
+    <p class="hint">A web app can't push you when it's closed — so LastChance exports real calendar reminders with alarms 7 days, 3 days, 1 day before and on the day. Add them once to Google / Apple Calendar and your phone will nag you for free, forever.</p>
+    <button id="icsAllBtn" class="primary">📅 Download calendar file for ALL open deadlines (.ics)</button>
+    <button id="notifyBtn" class="ghost">Allow in-app notifications while LastChance is open</button>
+    <h3>Your data</h3>
+    <button id="exportBtn" class="primary">Export data (JSON)</button>
+    <label class="field-label" for="importFile">Import data (JSON)</label>
+    <input id="importFile" type="file" accept="application/json">
+    <label class="toggle"><input type="checkbox" id="darkToggle"> Dark mode</label>
+    <button id="clearBtn" class="ghost">Clear all data on this device</button>
+  </section>
+
+  <section class="card install">
+    <h2>Install — free forever</h2>
+    <p><strong>Android:</strong> Chrome → ⋮ → “Install app”, or the APK from GitHub Releases.</p>
+    <p><strong>iPhone / iPad:</strong> Safari → Share → “Add to Home Screen”.</p>
+    <p>No account. No ads. No record limits. Your deadlines never leave your device.</p>
+    <button id="installBtn" class="primary" hidden>Install LastChance</button>
+  </section>
+</main>
+<footer>LastChance is free &amp; open source (MIT). Not affiliated with any store or service named in your own entries.</footer>
+<script src="app.js"></script>
+</body>
+</html>
